@@ -11,7 +11,9 @@ EMPLOYEE_STATUS_CHOICES = {
     "on-probation": "Probation",
 }
 
-
+''' 
+To anyone reading this, these models will be serialized using serializers.py. Serializing means that these each object in the Django reference table will be parsed into a json object. This json object can be fed through different frontends. 
+'''
 class Snippet(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, blank=True, default='')
