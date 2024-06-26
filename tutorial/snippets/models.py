@@ -35,4 +35,8 @@ class Employee(models.Model):
     last_edited_on = models.DateTimeField(auto_now_add=True)
     employee_status = models.CharField(choices = EMPLOYEE_STATUS_CHOICES, default='full-time', max_length = 50)
 
+    def __str__(self):
+        return self.employee_first_name + " " + self.employee_last_name
+    
+
 
