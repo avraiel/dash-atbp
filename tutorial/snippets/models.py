@@ -2,6 +2,8 @@ from django.db import models
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 
+# from django.contrib.auth.models import AbstractBaseUser, PermissionMixin, BaseUserManager
+
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
@@ -9,7 +11,7 @@ EMPLOYEE_STATUS_CHOICES = {
     "full-time": "Full-time", 
     "suspended": "Suspended",
     "on-probation": "Probation",
-}
+}   
 
 ''' 
 To anyone reading this, these models will be serialized using serializers.py. Serializing means that these each object in the Django reference table will be parsed into a json object. This json object can be fed through different frontends. 
@@ -38,5 +40,6 @@ class Employee(models.Model):
     def __str__(self):
         return self.employee_first_name + " " + self.employee_last_name
     
+# class User(AbstractBaseUser, PermissionMixin):
 
 

@@ -11,6 +11,8 @@ from rest_framework.decorators import api_view
 from snippets.models import Snippet, Employee
 from snippets.serializers import SnippetSerializer, EmployeeSerializer
 
+from django.shortcuts import render
+
 # New imports
 from django.http import Http404
 from rest_framework.views import APIView
@@ -164,3 +166,12 @@ def employee_detail(request, pk, format = None):
     elif request.method == 'DELETE':
         employee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+def gabriel(request):
+    context = {}
+    
+    dash_context = request.session.get("django_plotly_dash", dict())
+    dash_context['django_to_dash_context'] = "I am Dash receiving context from Django"
+    request.session['django_plotly_dash'] = dash_context
+
+    return render(request, template_name='template.html', context = context)
