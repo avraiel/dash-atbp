@@ -11,6 +11,8 @@ urlpatterns = [
     path('employees/<int:pk>/', views.employee_detail),
     path('test/', views.gabriel, name="gabriel"),
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
+    path('roles/', views.role_list),
+    path('roles/<int:pk>/', views.role_detail, name="role_detail"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

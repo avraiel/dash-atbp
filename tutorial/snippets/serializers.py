@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from snippets.models import Snippet, Employee, LANGUAGE_CHOICES, STYLE_CHOICES
+from snippets.models import Snippet, Employee, Role, LANGUAGE_CHOICES, STYLE_CHOICES
 
 # This is the custom serializers, you can have one prebuilt by augmenting the ModelSerializer class
 class SnippetSerializer(serializers.Serializer):
@@ -29,7 +29,13 @@ class SnippetSerializer(serializers.Serializer):
         return instance
     
 
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = "__all__"
+
 class EmployeeSerializer(serializers.ModelSerializer):
+    # role = RoleSerializer()
     class Meta:
         model = Employee
-        fields = ['employee_id', 'employee_first_name', 'employee_middle_name', 'employee_last_name', 'started_on', 'ended_on', 'last_edited_on', 'employee_status']
+        fields = ['employee_id', 'employee_first_name', 'employee_middle_name', 'employee_last_name', 'role', 'started_on', 'ended_on', 'last_edited_on', 'employee_status']

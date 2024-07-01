@@ -8,8 +8,8 @@ from rest_framework.decorators import api_view
 # JSON Parser was removed because the DRF extends the functionality of the regular HttpRequest
 
 # To add to the views, you need to import the models and the serializers so they can be json objects
-from snippets.models import Snippet, Employee
-from snippets.serializers import SnippetSerializer, EmployeeSerializer
+from snippets.models import Snippet, Employee, Role
+from snippets.serializers import SnippetSerializer, EmployeeSerializer, RoleSerializer
 
 from django.shortcuts import render
 
@@ -165,6 +165,49 @@ def employee_detail(request, pk, format = None):
 
     elif request.method == 'DELETE':
         employee.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'POST'])
+def role_list(request, format = None):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        roles = Role.objects.all()
+        serializer = RoleSerializer(roles, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = RoleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def role_detail(request, pk, format = None):
+    """ 
+    Retrieve, update or delete a code snippet.
+    Employee.objects.get gets the employee data based on the employee_id variable, pk is the variable passed through the url.
+    """
+    try:
+        role = Role.objects.get(role_id=pk)
+    except Role.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RoleSerializer(role)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = RoleSerializer(role, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        role.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 def gabriel(request):
