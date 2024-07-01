@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 
 app = Dash(__name__)
+print(__name__)
 
 ## TODO: Modify to accept JSON data into dash app
 
@@ -21,13 +22,14 @@ app = Dash(__name__)
 link = requests.get("http://127.0.0.1:8000/employees.json").json()
 # print(link, end="\n")
 df = pd.read_json("http://127.0.0.1:8000/employees.json")
-print(df)
+
 # link = requests.get("https://pokeapi.co/api/v2/pokemon/pikachu").json()
 
 
 fig = px.histogram(df, x="employee_status", color="employee_status")
 
 app.layout = html.Div(children=[
+
     html.H1(children='Hello Dash World!'),
 
     html.Div(children='''
