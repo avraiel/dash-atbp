@@ -1,11 +1,20 @@
 import flask
-
+import requests
 import dash
 from dash import html, dcc
 
+def get_all_roles():
+    request_url = "http://127.0.0.1:8000/roles.json"
+    response = requests.get(request_url).json()
+    roles = {}
+    for role in response:
+        roles[role['role_id']] = role['role_name']
+    return roles
+
+print(get_all_roles())
 dash.register_page(__name__, 
                    path = '/create',
-                   name = 'Create and Update')
+                   name = 'Create Employee')
 
 layout = html.Div([
     html.H1('Create Employee'),
@@ -33,11 +42,14 @@ layout = html.Div([
                 name="employee_last_name",
                 placeholder="Last Name".format("text"),
             ),
-            dcc.Input(
-                id="role",
-                type="number",
-                name="role",
-                placeholder="Role".format("text"),
+            html.Select(id="role",
+                       name="role",
+                       children = [
+                           html.Option(
+                               f"{value}",
+                               value = key,
+                           ) for key, value in get_all_roles().items()
+            ]
             ),
             dcc.Input(
                 id="started_on",

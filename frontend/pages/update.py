@@ -2,6 +2,7 @@ import flask
 import requests
 import dash
 from dash import html, dcc
+from pages.create import get_all_roles
 
 dash.register_page(__name__, 
                    path_template = '/update/<employee_id>',
@@ -50,12 +51,14 @@ def layout(employee_id=None, **kwargs):
                         value=f"{response['employee_last_name']}",
                         placeholder="Last Name".format("text"),
                     ),
-                    dcc.Input(
-                        id="role",
-                        type="number",
-                        name="role",
-                        value=f"{response['role']}",
-                        placeholder="Role".format("text"),
+                    html.Select(id="role",
+                       name="role",
+                       children = [
+                           html.Option(
+                               f"{value}",
+                               value = key,
+                           ) for key, value in get_all_roles().items()
+                    ]
                     ),
                     dcc.Input(
                         id="started_on",
